@@ -73,6 +73,28 @@ func TestBookService_GetByID(t *testing.T) {
 		wantErr bool
 	}{
 		// TODO: Add test cases.
+		{
+			name: "Case: Found Book",
+			fields: fields{
+				repo: mr,
+			},
+			args: args{
+				id: 1,
+			},
+			want:    tmpBook,
+			wantErr: false,
+		},
+		{
+			name: "Case: Not Found Book",
+			fields: fields{
+				repo: mr,
+			},
+			args: args{
+				id: 0,
+			},
+			want:    domains.Book{},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
