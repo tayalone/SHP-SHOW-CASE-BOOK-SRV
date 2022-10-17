@@ -33,7 +33,8 @@ services:
       - RDM_USER=postgres
       - RDM_PASSWORD=example
       - RDM_DB=testing
-    command: air -d
+      - TIME_ZONE=Asia/Bangkok
+    command: air
     depends_on:
       - rdb
 volumes:
