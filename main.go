@@ -43,7 +43,6 @@ func newRoute(b ports.BookSrv) router.Route {
 	v1.GET("/ping", myCustomMdw, iSayPing)
 
 	myRouter.GET("/book/:id", func(ctx router.Context) {
-
 		type getIDUri struct {
 			ID uint `uri:"id" binding:"required"`
 		}
@@ -73,7 +72,6 @@ func newRoute(b ports.BookSrv) router.Route {
 }
 
 func main() {
-
 	db := repos.New()
 	// ------- Make Repository
 	bookRepo := BookRepo.New(db)
@@ -101,5 +99,4 @@ func main() {
 	// myRouter.Start()
 	myRouter := newRoute(bookSrv)
 	myRouter.Start()
-
 }
