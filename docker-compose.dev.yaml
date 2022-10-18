@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  rdb:
+    image: postgres:14.5-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: testing
+    ports:
+      - "5432:5432"
+    volumes:
+      - rdb:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - rdb
+  book-servive:
+    image: cosmtrek/air
+    working_dir: /project
+    volumes:
+      - ./:/project/
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - RDM_HOST=rdb
+      - RDM_PORT=5432
+      - RDM_USER=postgres
+      - RDM_PASSWORD=example
+      - RDM_DB=testing
+      - TIME_ZONE=Asia/Bangkok
+    command: air
+    depends_on:
+      - rdb
+volumes:
+  rdb:
+    driver: local

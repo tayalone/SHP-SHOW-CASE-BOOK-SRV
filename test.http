@@ -1,0 +1,15 @@
+# GET /book/:id
+
+GET http://localhost:3000/book/
+
+###
+GET http://localhost:3000/book/one
+
+###
+GET http://localhost:3000/book/1
+
+###
+GET http://localhost:3000/book/2
+
+###
+GET http://localhost:3000/ping
