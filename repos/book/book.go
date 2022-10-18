@@ -27,7 +27,7 @@ func (r *Repository) GetByPk(id uint) (domains.Book, error) {
 	result := r.db.First(&b, id)
 
 	if result.RowsAffected != 1 {
-		return domains.Book{}, errors.New("Barcode Condition Not Found")
+		return domains.Book{}, errors.New("Book Not Found")
 	}
 	return b, nil
 }
