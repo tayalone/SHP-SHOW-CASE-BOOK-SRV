@@ -10,6 +10,7 @@ import (
 	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
 	router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
 	RouteInitor "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/init"
+	"github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/mylog"
 )
 
 func iSayPing(c router.Context) {
@@ -30,6 +31,7 @@ type tmpRoute struct {
 var mtr tmpRoute
 
 func newRoute(b ports.BookSrv) router.Route {
+	mylog.LogInfo("Holay I use my lovely PKG")
 	myRouter := RouteInitor.Init("GIN", router.Config{Port: 3000})
 	myRouter.GET("/ping", myCustomMdw, iSayPing)
 	myRouter.GET("/fiber", func(c router.Context) {
