@@ -4,18 +4,18 @@ import (
 	"errors"
 
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/domains"
-	"gorm.io/gorm"
+	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos"
 )
 
 /*Repository (Adaptor) is Definition of Value */
 type Repository struct {
-	db *gorm.DB
+	db *repos.RDB
 }
 
 var bookRepo = Repository{}
 
 /*New do Create Rdb Connection*/
-func New(db *gorm.DB) *Repository {
+func New(db *repos.RDB) *Repository {
 	bookRepo.db = db
 	return &bookRepo
 }
