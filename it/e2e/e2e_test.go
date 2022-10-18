@@ -15,7 +15,7 @@ import (
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/services"
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos"
 	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
-	router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
+	MyRouter "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/myrouter"
 )
 
 func initData(db *repos.RDB) {
@@ -48,7 +48,7 @@ type TestSuite struct {
 	suite.Suite
 	db     *repos.RDB
 	repo   ports.BookRpstr
-	router *router.MyRouter
+	router *MyRouter.MyRouter
 }
 
 var loc, _ = time.LoadLocation("Asia/Bangkok")
@@ -68,7 +68,7 @@ func (suite *TestSuite) SetupSuite() {
 	initData(db)
 	suite.repo = bookRepo
 	bookSrv := services.New(bookRepo)
-	suite.router = router.New(bookSrv)
+	suite.router = MyRouter.New(bookSrv)
 }
 
 func (suite *TestSuite) TestNotUseQParams() {
