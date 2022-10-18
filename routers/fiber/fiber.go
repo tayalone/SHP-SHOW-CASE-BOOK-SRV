@@ -22,6 +22,13 @@ func (c *MyFiberContext) JSON(statuscode int, v interface{}) {
 	c.Ctx.Status(statuscode).JSON(v)
 }
 
+/*BindURI return everything to json*/
+func (c *MyFiberContext) BindURI(obj interface{}) error {
+	// c.Context.JSON(statuscode, v)
+	err := c.Ctx.ParamsParser(obj)
+	return err
+}
+
 /*NewMyFiberContext create My New Context*/
 func NewMyFiberContext(ctx *fiber.Ctx) *MyFiberContext {
 	return &MyFiberContext{Ctx: ctx}

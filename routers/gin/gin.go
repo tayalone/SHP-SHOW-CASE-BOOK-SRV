@@ -31,6 +31,12 @@ func (c *MyGinContext) JSON(statuscode int, v interface{}) {
 	c.Context.JSON(statuscode, v)
 }
 
+/*BindURI return error uri*/
+func (c *MyGinContext) BindURI(obj interface{}) error {
+	err := c.Context.ShouldBindUri(obj)
+	return err
+}
+
 /*NewMyGinContext create My New Context*/
 func NewMyGinContext(c *gin.Context) *MyGinContext {
 	return &MyGinContext{Context: c}

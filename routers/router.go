@@ -4,6 +4,7 @@ package router
 type Context interface {
 	Next()
 	JSON(int, interface{})
+	BindURI(interface{}) error
 }
 
 /*Route is Behavior of Route Method In Application*/
