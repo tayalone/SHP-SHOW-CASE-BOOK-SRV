@@ -31,6 +31,19 @@ func migrate(db *gorm.DB) {
 		db.Migrator().DropTable(&domains.Book{})
 	}
 	db.AutoMigrate(&domains.Book{})
+
+	var desc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+
+	// / Add Initail Data
+	initialBook := []domains.Book{
+		{
+			Title:  "Lorem",
+			Desc:   &desc,
+			Author: "Dante Allergie",
+		},
+	}
+	db.Create(initialBook)
+
 	log.Println("Create 'books'")
 }
 
@@ -56,6 +69,8 @@ func New() *RDB {
 	log.Println("Connect RDB Success!!!")
 	rdb.DB = db
 	rdb.errMsg = ""
+
+	migrate(db)
 
 	return &rdb
 }
