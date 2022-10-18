@@ -1,9 +1,7 @@
 package repos
 
 import (
-	"fmt"
 	"log"
-	"os"
 	"testing"
 	"time"
 
@@ -100,6 +98,5 @@ func TestRoutePingSuite(t *testing.T) {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	fmt.Println("xxx", os.Getenv("RDM_HOST"))
 	suite.Run(t, new(BookRepositoryTestSuite))
 }
