@@ -13,8 +13,6 @@ import (
 	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
 )
 
-var loc, _ = time.LoadLocation("Asia/Bangkok")
-
 /*BookRepositoryTestSuite is a test suit for Repo*/
 type BookRepositoryTestSuite struct {
 	suite.Suite
@@ -22,6 +20,7 @@ type BookRepositoryTestSuite struct {
 	repo ports.BookRpstr
 }
 
+var loc, _ = time.LoadLocation("Asia/Bangkok")
 var desc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
 var tmpTime = time.Now().In(loc)
 
@@ -37,6 +36,7 @@ func initData(db *repos.RDB) {
 	// / Add Initail Data
 	initialBook := []domains.Book{
 		{
+			ID:        1,
 			Title:     "Lorem",
 			Desc:      &desc,
 			Author:    "Dante Allergie",
@@ -52,14 +52,13 @@ func initData(db *repos.RDB) {
 /*SetupSuite init setup for BookRepo*/
 func (suite *BookRepositoryTestSuite) SetupSuite() {
 	// suite.Router = router.SetUpRouter()
-
 	db := repos.New()
 	// ------- Make Repository
 	bookRepo := BookRepo.New(db)
 
 	suite.db = db
 	suite.repo = bookRepo
-
+	initData(db)
 }
 
 /*BeforeTest Do Setup Enviroment for each test case in suite */
@@ -72,7 +71,14 @@ func (suite *BookRepositoryTestSuite) TestFoundBookByID() {
 
 	b, err := suite.repo.GetByPk(1)
 
-	suite.NotEqual(b, domains.Book{})
+	suite.EqualValues(b, domains.Book{
+		ID:        1,
+		Title:     "Lorem",
+		Desc:      &desc,
+		Author:    "Dante Allergie",
+		CreatedAt: b.CreatedAt,
+		UpdatedAt: b.UpdatedAt,
+	})
 	suite.Equal(err, nil)
 }
 

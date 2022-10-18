@@ -9,7 +9,7 @@ import (
 
 /*MyRouter is Define Attr of SPI Router in Application*/
 type MyRouter struct {
-	engine *gin.Engine
+	*gin.Engine
 }
 
 var mr MyRouter
@@ -41,12 +41,12 @@ func New(b ports.BookSrv) *MyRouter {
 
 	})
 
-	mr.engine = r
+	mr.Engine = r
 	return &mr
 }
 
 /*Start is  a trigger Router Serve API*/
 func (mr MyRouter) Start() {
 
-	mr.engine.Run(":3000")
+	mr.Engine.Run(":3000")
 }
