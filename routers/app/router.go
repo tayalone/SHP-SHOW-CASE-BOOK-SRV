@@ -1,18 +1,21 @@
-package main
+package app
 
 import (
 	"fmt"
 	"net/http"
 
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/ports"
-	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/services"
-	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos"
-	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
 	router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
-	App "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/app"
 	RouteInitor "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/init"
 	"github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/mylog"
 )
+
+/*Route is Route Composite*/
+type Route struct {
+	router.Route
+}
+
+var ar Route
 
 func iSayPing(c router.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -25,13 +28,8 @@ func myCustomMdw(c router.Context) {
 	c.Next()
 }
 
-type tmpRoute struct {
-	router.Route
-}
-
-var mtr tmpRoute
-
-func newRoute(b ports.BookSrv) router.Route {
+/*New return router For Application */
+func New(b ports.BookSrv) router.Route {
 	mylog.LogInfo("Holay I use my lovely PKG")
 	myRouter := RouteInitor.Init("GIN", router.Config{Port: 3000})
 	myRouter.GET("/ping", myCustomMdw, iSayPing)
@@ -70,37 +68,6 @@ func newRoute(b ports.BookSrv) router.Route {
 		})
 	})
 
-	mtr.Route = myRouter
-	return &mtr
-}
-
-func main() {
-	db := repos.New()
-	// ------- Make Repository
-	bookRepo := BookRepo.New(db)
-
-	bookSrv := services.New(bookRepo)
-
-	// // myRouter := MyRouter.New(bookSrv)
-
-	// // myRouter.Start()
-	// mySw := SwitchRouter.New(bookSrv)
-	// mySw.Start()
-
-	// myRouter := RouteInitor.Init("GIN", router.Config{Port: 3000})
-	// myRouter.GET("/ping", myCustomMdw, iSayPing)
-	// myRouter.GET("/fiber", func(c router.Context) {
-	// 	c.JSON(http.StatusOK, map[string]interface{}{
-	// 		"message": "Show Value from /fiber",
-	// 	})
-	// })
-
-	// v1 := myRouter.Group("/v1")
-
-	// v1.GET("/ping", myCustomMdw, iSayPing)
-
-	// myRouter.Start()
-	// myRouter := newRoute(bookSrv)
-	myRouter := App.New(bookSrv)
-	myRouter.Start()
+	ar.Route = myRouter
+	return &ar
 }
