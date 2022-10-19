@@ -15,11 +15,11 @@ import (
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/services"
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos"
 	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
-	MyRouter "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/myrouter"
+	router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
+	App "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/app"
 )
 
 func initData(db *repos.RDB) {
-
 	if (db.Migrator().HasTable(&domains.Book{})) {
 		log.Println("Table Existing, Drop IT")
 
@@ -48,11 +48,13 @@ type TestSuite struct {
 	suite.Suite
 	db     *repos.RDB
 	repo   ports.BookRpstr
-	router *MyRouter.MyRouter
+	router router.Route
 }
 
-var loc, _ = time.LoadLocation("Asia/Bangkok")
-var tmpTime = time.Now().In(loc)
+var (
+	loc, _  = time.LoadLocation("Asia/Bangkok")
+	tmpTime = time.Now().In(loc)
+)
 
 var desc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
 
@@ -68,7 +70,9 @@ func (suite *TestSuite) SetupSuite() {
 	initData(db)
 	suite.repo = bookRepo
 	bookSrv := services.New(bookRepo)
-	suite.router = MyRouter.New(bookSrv)
+	myRouter := App.New(bookSrv)
+
+	suite.router = myRouter
 }
 
 func (suite *TestSuite) TestNotUseQParams() {
@@ -128,7 +132,7 @@ func (suite *TestSuite) TestFoundBookID() {
 }
 
 /*TestRoutePingSuite is trigger run it test*/
-func TestRoutePingSuite(t *testing.T) {
+func TestRouteBookSuite(t *testing.T) {
 	err := godotenv.Load("../../.env.dev")
 	if err != nil {
 		log.Fatal("Error loading .env file")
