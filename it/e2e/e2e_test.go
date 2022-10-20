@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -15,8 +14,8 @@ import (
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/services"
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos"
 	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
-	router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
-	App "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/app"
+	App "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/router"
+	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
 )
 
 func initData(db *repos.RDB) {
@@ -76,40 +75,32 @@ func (suite *TestSuite) SetupSuite() {
 }
 
 func (suite *TestSuite) TestNotUseQParams() {
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest(http.MethodGet, "/book", nil)
-	suite.router.ServeHTTP(w, req)
+	statusCode, actual := suite.router.Testing(http.MethodGet, "/book", nil)
 
-	suite.Equal(http.StatusNotFound, w.Code)
-	suite.Equal("404 page not found", w.Body.String())
+	suite.Equal(http.StatusNotFound, statusCode)
+	suite.Equal("404 page not found", actual)
 }
 
 func (suite *TestSuite) TestUseWrongParamType() {
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest(http.MethodGet, "/book/one", nil)
-	suite.router.ServeHTTP(w, req)
+	statusCode, actual := suite.router.Testing(http.MethodGet, "/book/one", nil)
 
-	suite.Equal(http.StatusBadRequest, w.Code)
+	suite.Equal(http.StatusBadRequest, statusCode)
 	suite.JSONEq(`{
 		"msg": "strconv.ParseUint: parsing \"one\": invalid syntax"
-	  }`, w.Body.String())
+	  }`, actual)
 }
 
 func (suite *TestSuite) TestFindNotFondBookByID() {
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest(http.MethodGet, "/book/2", nil)
-	suite.router.ServeHTTP(w, req)
+	statusCode, actual := suite.router.Testing(http.MethodGet, "/book/2", nil)
 
-	suite.Equal(http.StatusInternalServerError, w.Code)
+	suite.Equal(http.StatusInternalServerError, statusCode)
 	suite.JSONEq(`{
 		"msg": "Book Not Found"
-	  }`, w.Body.String())
+	  }`, actual)
 }
 
 func (suite *TestSuite) TestFoundBookID() {
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest(http.MethodGet, "/book/1", nil)
-	suite.router.ServeHTTP(w, req)
+	statusCode, actual := suite.router.Testing(http.MethodGet, "/book/1", nil)
 
 	wb := domains.Book{
 		ID:        1,
@@ -127,8 +118,8 @@ func (suite *TestSuite) TestFoundBookID() {
 
 	want, _ := json.Marshal(wantMap)
 
-	suite.Equal(http.StatusOK, w.Code)
-	suite.JSONEq(string(want), w.Body.String())
+	suite.Equal(http.StatusOK, statusCode)
+	suite.JSONEq(string(want), actual)
 }
 
 /*TestRoutePingSuite is trigger run it test*/

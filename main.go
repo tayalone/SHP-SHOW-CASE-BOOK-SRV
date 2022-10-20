@@ -4,7 +4,7 @@ import (
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/services"
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos"
 	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
-	App "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/app"
+	Router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/router"
 )
 
 func main() {
@@ -14,6 +14,6 @@ func main() {
 
 	bookSrv := services.New(bookRepo)
 
-	myRouter := App.New(bookSrv)
+	myRouter := Router.New(bookSrv)
 	myRouter.Start()
 }
