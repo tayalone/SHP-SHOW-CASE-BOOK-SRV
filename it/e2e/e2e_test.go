@@ -14,7 +14,7 @@ import (
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/services"
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos"
 	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
-	App "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/app"
+	App "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/router"
 	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
 )
 
