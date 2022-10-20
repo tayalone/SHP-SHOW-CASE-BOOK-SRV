@@ -31,7 +31,7 @@ func myCustomMdw(c router.Context) {
 /*New return router For Application */
 func New(b ports.BookSrv) router.Route {
 	mylog.LogInfo("Holay I use my lovely PKG")
-	myRouter := RouteInitor.Init("FIBER", router.Config{Port: 3000})
+	myRouter := RouteInitor.Init("GIN", router.Config{Port: 3000})
 	myRouter.GET("/ping", myCustomMdw, iSayPing)
 	myRouter.GET("/fiber", func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
