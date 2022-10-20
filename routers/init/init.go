@@ -1,13 +1,13 @@
 package init
 
 import (
-	routers "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
+	router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/fiber"
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/gin"
 )
 
 /*Init Reouter Router Instant */
-func Init(rType string, conf routers.Config) routers.Route {
+func Init(rType string, conf router.Config) router.Route {
 	switch rType {
 	case "GIN":
 		return gin.NewMyRouter(conf)
