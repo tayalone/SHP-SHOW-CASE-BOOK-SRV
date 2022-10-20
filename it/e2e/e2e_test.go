@@ -15,8 +15,8 @@ import (
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/services"
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos"
 	BookRepo "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/repos/book"
-	router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
 	App "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/app"
+	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
 )
 
 func initData(db *repos.RDB) {

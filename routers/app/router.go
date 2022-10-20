@@ -5,35 +5,35 @@ import (
 	"net/http"
 
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/ports"
-	routers "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
-	RouteInitor "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers/init"
 	"github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/mylog"
+	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
+	RouteInitor "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router/initor"
 )
 
 /*Route is Route Composite*/
 type Route struct {
-	routers.Route
+	router.Route
 }
 
 var ar Route
 
-func iSayPing(c routers.Context) {
+func iSayPing(c router.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "pong",
 	})
 }
 
-func myCustomMdw(c routers.Context) {
+func myCustomMdw(c router.Context) {
 	fmt.Println("I println from myCustomMdw")
 	c.Next()
 }
 
 /*New return router For Application */
-func New(b ports.BookSrv) routers.Route {
+func New(b ports.BookSrv) router.Route {
 	mylog.LogInfo("Holay I use my lovely PKG")
-	myRouter := RouteInitor.Init("GIN", routers.Config{Port: 3000})
+	myRouter := RouteInitor.Init("FIBER", router.Config{Port: 3000})
 	myRouter.GET("/ping", myCustomMdw, iSayPing)
-	myRouter.GET("/fiber", func(c routers.Context) {
+	myRouter.GET("/fiber", func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"message": "Show Value from /fiber",
 		})
@@ -43,7 +43,7 @@ func New(b ports.BookSrv) routers.Route {
 
 	v1.GET("/ping", myCustomMdw, iSayPing)
 
-	myRouter.GET("/book/:id", func(ctx routers.Context) {
+	myRouter.GET("/book/:id", func(ctx router.Context) {
 		type getIDUri struct {
 			ID uint `uri:"id" binding:"required"`
 		}
