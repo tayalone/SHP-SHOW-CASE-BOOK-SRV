@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
@@ -45,9 +46,10 @@ func initData(db *repos.RDB) {
 /*TestSuite is a test suit for Repo*/
 type TestSuite struct {
 	suite.Suite
-	db     *repos.RDB
-	repo   ports.BookRpstr
-	router router.Route
+	db         *repos.RDB
+	repo       ports.BookRpstr
+	router     router.Route
+	routerType string
 }
 
 var (
@@ -71,14 +73,26 @@ func (suite *TestSuite) SetupSuite() {
 	bookSrv := services.New(bookRepo)
 	myRouter := App.New(bookSrv)
 
+	routerType := os.Getenv("ROUTER_TYPE")
+	if routerType == "" {
+		routerType = "GIN"
+	}
+
+	suite.routerType = routerType
+
 	suite.router = myRouter
 }
 
 func (suite *TestSuite) TestNotUseQParams() {
 	statusCode, actual := suite.router.Testing(http.MethodGet, "/book", nil)
 
+	want := "404 page not found"
+	if suite.routerType == "FIBER" {
+		want = "Cannot GET /book"
+	}
+
 	suite.Equal(http.StatusNotFound, statusCode)
-	suite.Equal("404 page not found", actual)
+	suite.Equal(want, actual)
 }
 
 func (suite *TestSuite) TestUseWrongParamType() {
