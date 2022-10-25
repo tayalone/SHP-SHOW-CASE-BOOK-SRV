@@ -34,6 +34,7 @@ services:
       - RDM_PASSWORD=example
       - RDM_DB=testing
       - TIME_ZONE=Asia/Bangkok
+      - ROUTER_TYPE=FIBER
     command: air
     depends_on:
       - rdb

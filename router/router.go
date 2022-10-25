@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/core/ports"
 	"github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/mylog"
@@ -30,8 +31,14 @@ func myCustomMdw(c router.Context) {
 
 /*New return router For Application */
 func New(b ports.BookSrv) router.Route {
+
+	routerType := os.Getenv("ROUTER_TYPE")
+	if routerType == "" {
+		routerType = "GIN"
+	}
+
 	mylog.LogInfo("Holay I use my lovely PKG")
-	myRouter := RouteInitor.Init("GIN", router.Config{Port: 3000})
+	myRouter := RouteInitor.Init(routerType, router.Config{Port: 3000})
 	myRouter.GET("/ping", myCustomMdw, iSayPing)
 	myRouter.GET("/fiber", func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
